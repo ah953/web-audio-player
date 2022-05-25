@@ -12,11 +12,10 @@ import { UPLOAD_FOLDER } from "../lib/consts";
 export default function AudioPlayer({ item, open, handleClose }) {
   const [isDownloading, setDownloading] = React.useState(false);
 
-  const getAudioUrl = (filename) => `/${UPLOAD_FOLDER}/${filename}`;
   const handleDownload = () => {
     if (item.filename) {
       setDownloading(true);
-      fetch(getAudioUrl(item.filename))
+      fetch(item.filename)
         .then((resp) => resp.blob())
         .then(function (blob) {
           download(blob, `${item.title}.mp3`);
@@ -50,9 +49,11 @@ export default function AudioPlayer({ item, open, handleClose }) {
             <audio
               style={{ width: "100%" }}
               id="audio_element"
-              src={getAudioUrl(item.filename)}
+              src={item.filename}
               controls
+              crossOrigin="anonymous"
               controlsList="nodownload"
+              // autoPlay
             />
           </div>
         ) : (
